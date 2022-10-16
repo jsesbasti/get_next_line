@@ -1,0 +1,4 @@
+hola esto es una prueba con texto plano
+funciona?
+\n
+\0 esta cadena no se tendria que imprimir

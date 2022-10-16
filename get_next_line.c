@@ -5,84 +5,99 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsebasti <jsebasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 09:48:30 by jsebasti          #+#    #+#             */
-/*   Updated: 2022/10/10 14:39:07 by jsebasti         ###   ########.fr       */
+/*   Created: 2022/10/15 03:05:15 by jsebasti          #+#    #+#             */
+/*   Updated: 2022/10/16 03:07:36 by jsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	ft_free_null(char **pt)
+char	*clean_buf(char *buf)
 {
-	if (*pt != NULL)
+	char	*new_buf;
+	char	*ptr;
+	int		len;
+
+	ptr = ft_strchr(buf, '\n');
+	if (!ptr)
 	{
-		free(*pt);
-		pt = NULL;
+		free(buf);
+		new_buf = NULL;
+		return (NULL);
 	}
+	else
+		len = (ptr - buf) + 1;
+	if (!buf[len])
+	{
+		free(buf);
+		return (NULL);
+	}
+	new_buf = ft_substr(buf, len, ft_strlen(buf) - len);
+	if (!new_buf)
+		return (NULL);
+	free(buf);
+	return (new_buf);
 }
 
-static char	*join_line(int nl_index, char **buffer)
+char	*new_line(char *buf)
 {
-	char	*result;
-	char	*tmp;
+	char	*line;
+	char	*ptr;
+	int		len;
 
-	tmp = NULL;
-	if (nl_index <= 0)
+	ptr = ft_strchr(buf, '\n');
+	len = (ptr - buf) + 1;
+	line = ft_substr(buf, 0, len);
+	if (!line)
+		return (NULL);
+	return (line);
+}
+
+char	*ft_read(int fd, char *buf)
+{
+	char	*buffer;
+	int		rd;
+
+	rd = 1;
+	buffer = malloc(sizeof(char *) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (0);
+	buffer[0] = '\0';
+	while (rd > 0 && !ft_strchr(buffer, '\n'))
 	{
-		if (**buffer == '\0')
+		rd = read(fd, buffer, BUFFER_SIZE);
+		if (rd == -1)
 		{
-			free(*buffer);
-			*buffer = NULL;
+			free(buffer);
 			return (NULL);
 		}
-		result = *buffer;
-		*buffer = NULL;
-		return (result);
+		if (rd > 0)
+		{
+			buffer[rd] = '\0';
+			buf = ft_strjoin(buf, buffer);
+		}
 	}
-	tmp = ft_substr(*buffer, nl_index, BUFFER_SIZE);
-	result = *buffer;
-	result[nl_index] = 0;
-	*buffer = tmp;
-	return (result);
-}
-
-static char	*ft_read(int fd, char **buf, char *aux)
-{
-	ssize_t	bytes_read;
-	char	*tmp;
-	char	*nl;
-
-	nl = ft_strchr(*buf, '\n');
-	tmp = NULL;
-	bytes_read = 0;
-	while (nl == NULL)
-	{
-		bytes_read = read(fd, aux, BUFFER_SIZE);
-		if (bytes_read <= 0)
-			return (join_line(bytes_read, buf));
-		aux[bytes_read] = 0;
-		tmp = ft_strjoin(*buf, aux);
-		ft_free_null(buf);
-		*buf = tmp;
-		nl = ft_strchr(*buf, '\n');
-	}
-	return (join_line(nl - *buf + 1, buf));
+	free(buffer);
+	return (buf);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buf;
-	char		*aux;
 	char		*line;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
+	if (fd < 0)
 		return (NULL);
-	aux = (char *)malloc(BUFFER_SIZE + 1);
-	if (!aux)
-		return (NULL);
+	if (!buf || (buf && !ft_strchr(buf, '\n')))
+		buf = ft_read(fd, buf);
 	if (!buf)
-		buf = ft_strdup("");
-	line = ft_read(fd, &buf, aux);
-	ft_free_null(&aux);
+		return (NULL);
+	line = new_line(buf);
+	if (!line)
+	{
+		free(buf);
+		return (NULL);
+	}
+	buf = clean_buf(buf);
 	return (line);
 }
