@@ -6,7 +6,7 @@
 /*   By: jsebasti <jsebasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 03:05:15 by jsebasti          #+#    #+#             */
-/*   Updated: 2022/10/16 03:07:36 by jsebasti         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:51:21 by jsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*clean_buf(char *buf)
 	char	*new_buf;
 	char	*ptr;
 	int		len;
+	int		len_buf;
 
 	ptr = ft_strchr(buf, '\n');
 	if (!ptr)
@@ -32,7 +33,8 @@ char	*clean_buf(char *buf)
 		free(buf);
 		return (NULL);
 	}
-	new_buf = ft_substr(buf, len, ft_strlen(buf) - len);
+	len_buf = ft_strlen(buf);
+	new_buf = ft_substr(buf, len, len_buf - len);
 	if (!new_buf)
 		return (NULL);
 	free(buf);
@@ -71,11 +73,9 @@ char	*ft_read(int fd, char *buf)
 			free(buffer);
 			return (NULL);
 		}
+		buffer[rd] = '\0';
 		if (rd > 0)
-		{
-			buffer[rd] = '\0';
 			buf = ft_strjoin(buf, buffer);
-		}
 	}
 	free(buffer);
 	return (buf);
@@ -96,8 +96,29 @@ char	*get_next_line(int fd)
 	if (!line)
 	{
 		free(buf);
+		buf = NULL;
 		return (NULL);
 	}
 	buf = clean_buf(buf);
 	return (line);
 }
+
+// crea una funcion main para probar el programa
+
+/*
+#include <stdio.h>
+int	main(void)
+{
+	int		fd;
+
+	fd = open("test.txt", O_RDONLY);
+	printf("Next Line = %s", get_next_line(fd));
+	printf("Next Line = %s", get_next_line(fd));
+	printf("Next Line = %s", get_next_line(fd));
+	printf("Next Line = %s", get_next_line(fd));
+	close(fd);
+	fd = open("test.txt", O_RDONLY);
+	printf("Next Line = %s", get_next_line(fd));
+	close(fd);
+	return 0;
+}*/

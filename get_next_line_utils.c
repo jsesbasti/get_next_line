@@ -6,7 +6,7 @@
 /*   By: jsebasti <jsebasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 16:12:53 by jsebasti          #+#    #+#             */
-/*   Updated: 2022/10/16 03:41:53 by jsebasti         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:56:04 by jsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,20 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-void	*ft_strjoinif(char *buf)
+char	*ft_strjoin_if(char *buf)
 {
-	buf = malloc(sizeof(char) + 1);
 	if (!buf)
-		return (NULL);
-	buf[0] = '\0';
+	{	
+		buf = malloc(sizeof(char) * 1);
+		if (!buf)
+		{
+			free(buf);
+			buf = NULL;
+			return (NULL);
+		}
+		buf[0] = '\0';
+		return (buf);
+	}
 	return (buf);
 }
 
@@ -53,8 +61,7 @@ char	*ft_strjoin(char *buf, char *buffer)
 	size_t	j;
 	char	*res;
 
-	if (!buf)
-		buf = ft_strjoinif(buf);
+	buf = ft_strjoin_if(buf);
 	res = (char *)malloc(ft_strlen(buf) + ft_strlen(buffer) + 1);
 	if (!res)
 	{
@@ -78,12 +85,14 @@ char	*ft_strjoin(char *buf, char *buffer)
 char	*ft_substr(char *buf, unsigned int start, size_t len)
 {
 	size_t	i;
+	size_t	buf_len;
 	char	*res;
 
+	buf_len = ft_strlen(buf);
 	i = 0;
 	if (!buf)
-		return (0);
-	if (start > ft_strlen(buf))
+		return (NULL);
+	if (start > buf_len)
 	{
 		res = malloc(sizeof(char) * (1));
 		if (!res)
@@ -91,12 +100,12 @@ char	*ft_substr(char *buf, unsigned int start, size_t len)
 		res[0] = '\0';
 		return (res);
 	}
-	if (ft_strlen(buf) - start < len)
-		len = ft_strlen(buf) - start;
+	if (buf_len - start < len)
+		len = buf_len - start;
 	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
 		return (NULL);
-	while (start < ft_strlen(buf) && i < len && buf[start])
+	while (start < buf_len && i < len && buf[start])
 		res[i++] = buf[start++];
 	res[i] = '\0';
 	return (res);
