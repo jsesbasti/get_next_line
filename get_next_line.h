@@ -6,7 +6,7 @@
 /*   By: jsebasti <jsebasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 03:04:41 by jsebasti          #+#    #+#             */
-/*   Updated: 2022/10/20 09:55:39 by jsebasti         ###   ########.fr       */
+/*   Updated: 2022/10/22 04:13:24 by jsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <stdio.h>
 
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *buf, char *buffer);
