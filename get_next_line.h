@@ -6,7 +6,7 @@
 /*   By: jsebasti <jsebasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 03:04:41 by jsebasti          #+#    #+#             */
-/*   Updated: 2022/10/22 04:13:24 by jsebasti         ###   ########.fr       */
+/*   Updated: 2022/10/27 20:44:41 by jsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 # include <limits.h>
 # include <stdio.h>
 
-size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char *buf, char *buffer);
-char	*ft_strchr(char *s, int c);
+size_t	ft_strlen(char *str);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(char *buf, char c);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
 char	*clean_buf(char *buf);
 char	*new_line(char *buf);
 char	*ft_read(int fd, char *buf);
-char	*ft_strjoin_if(char *buf);
+char	*ft_free(char **str);
 #endif
