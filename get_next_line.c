@@ -6,7 +6,7 @@
 /*   By: jsebasti <jsebasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 03:05:15 by jsebasti          #+#    #+#             */
-/*   Updated: 2022/11/07 17:54:46 by jsebasti         ###   ########.fr       */
+/*   Updated: 2022/11/10 11:09:46 by jsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*clean_buf(char *buf)
 		return (ft_free(&buf));
 	}
 	else
-		len = (buf - ptr) + 1;
+		len = (ptr - buf) + 1;
 	if (!buf[len])
 		return (ft_free(&buf));
 	new_buf = ft_substr(buf, len, ft_strlen(buf) - len);
@@ -64,10 +64,7 @@ char	*ft_read(int fd, char *buf)
 	rd = 1;
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
-	{
-		tmp = ft_free(&tmp);
 		return (ft_free(&buf));
-	}
 	tmp[0] = '\0';
 	while (rd > 0 && !ft_strchr(tmp, '\n'))
 	{
@@ -86,30 +83,18 @@ char	*ft_read(int fd, char *buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
+	static char	*buf = {0};
 	char		*line;
 
-	buf = NULL;
 	if (fd < 0)
 		return (NULL);
 	if (!buf || (buf && !ft_strchr(buf, '\n')))
 		buf = ft_read(fd, buf);
+	if (!buf)
+		return (NULL);
 	line = new_line(buf);
 	if (!line)
 		return (ft_free(&buf));
 	buf = clean_buf(buf);
 	return (line);
-}
-
-int	main(void)
-{
-	int		fd;
-	char	*str;
-
-	fd = open("test2.txt", O_RDONLY);
-	str = get_next_line(fd);
-	close(fd);
-	printf("%s", str);
-	free(str);
-	return (0);
 }

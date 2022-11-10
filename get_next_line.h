@@ -6,7 +6,7 @@
 /*   By: jsebasti <jsebasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 03:04:41 by jsebasti          #+#    #+#             */
-/*   Updated: 2022/10/27 20:44:41 by jsebasti         ###   ########.fr       */
+/*   Updated: 2022/11/10 00:17:45 by jsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <limits.h>
 # include <stdio.h>
 
+typedef struct s_list
+{
+	size_t		*len;
+}				t_list;
 size_t	ft_strlen(char *str);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(char *buf, char c);
