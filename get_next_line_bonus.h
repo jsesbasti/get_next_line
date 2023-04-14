@@ -17,6 +17,9 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <limits.h>
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 100000
+#endif
 
 size_t	ft_strlen(char *str);
 char	*ft_strjoin(char *s1, char *s2);
