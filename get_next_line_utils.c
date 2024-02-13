@@ -34,7 +34,7 @@ size_t	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_hudston(char *s1, char *s2, char *res)
+char	*ft_houston(char *s1, char *s2, char *res)
 {
 	size_t	i;
 	size_t	j;
@@ -68,7 +68,7 @@ char	*ft_strjoin(char *s1, char *s2)
 			return (0);
 		s1[0] = '\0';
 	}
-	res = ft_hudston(s1, s2, res);
+	res = ft_houston(s1, s2, res);
 	return (res);
 }
 
