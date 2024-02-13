@@ -78,10 +78,10 @@ char	*ft_substr(char *str, unsigned int start, size_t len)
 	size_t	lens;
 	char	*res;
 
-	lens = ft_strlen(str);
 	i = 0;
 	if (!str)
 		return (0);
+	lens = ft_strlen(str);
 	if (start > lens)
 	{
 		res = malloc(sizeof(char) * (1));
